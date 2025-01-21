@@ -1,0 +1,46 @@
+Running in Lattice mode
+
+
+Starting:    C:\lscc\iCEcube2.2020.12\synpbase\bin64\mbin\synbatch.exe
+Install:     C:\lscc\iCEcube2.2020.12\synpbase
+Hostname:    DESKTOP-LN4TNEO
+Date:        Tue Jan 21 11:51:18 2025
+Version:     L-2016.09L+ice40
+
+Arguments:   -product synplify_pro -batch Project1_Switches_And_LEDs_syn.prj
+ProductType: synplify_pro
+
+
+
+
+
+log file: "C:\Users\Liam\projects\FPGA\Getting Started with FPGAs\Project1_Switches_And_LEDs\Project1_Switches_And_LEDs_Implmnt\Project1_Switches_And_LEDs.srr"
+Running: Project1_Switches_And_LEDs_Implmnt in foreground
+
+Running Project1_Switches_And_LEDs_syn|Project1_Switches_And_LEDs_Implmnt
+
+Running: compile (Compile) on Project1_Switches_And_LEDs_syn|Project1_Switches_And_LEDs_Implmnt
+# Tue Jan 21 11:51:18 2025
+
+Running: compile_flow (Compile Process) on Project1_Switches_And_LEDs_syn|Project1_Switches_And_LEDs_Implmnt
+# Tue Jan 21 11:51:18 2025
+
+Running: compiler (Compile Input) on Project1_Switches_And_LEDs_syn|Project1_Switches_And_LEDs_Implmnt
+# Tue Jan 21 11:51:18 2025
+compiler exited with errors
+Job failed on: Project1_Switches_And_LEDs_syn|Project1_Switches_And_LEDs_Implmnt
+
+Job: "compiler" terminated with error status: 2
+See log file: "C:\Users\Liam\projects\FPGA\Getting Started with FPGAs\Project1_Switches_And_LEDs\Project1_Switches_And_LEDs_Implmnt\synlog\Project1_Switches_And_LEDs_compiler.srr"
+# Tue Jan 21 11:51:19 2025
+
+Return Code: 2
+Run Time:00h:00m:01s
+Complete: Compile Process on Project1_Switches_And_LEDs_syn|Project1_Switches_And_LEDs_Implmnt
+Complete: Compile on Project1_Switches_And_LEDs_syn|Project1_Switches_And_LEDs_Implmnt
+Complete: Logic Synthesis on Project1_Switches_And_LEDs_syn|Project1_Switches_And_LEDs_Implmnt
+
+exit status=2
+
+exit status=2
+
