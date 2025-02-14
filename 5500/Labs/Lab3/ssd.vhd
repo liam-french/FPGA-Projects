@@ -14,11 +14,11 @@ architecture impl of ssd is
 begin
     -- a
     O(0) <= not ((A and not B and not C) 
-					or (not A and B and D)
-					or (not B and not D)
-					or (nxot A and C)
-					or (A and not D)
-					or (B and C));
+                or (not A and B and D)
+                or (not B and not D)
+                or (not A and C)
+                or (A and not D)
+                or (B and C));
     -- b
     O(1) <= not((not A and not C and not D)
             or (not A and C and D)
