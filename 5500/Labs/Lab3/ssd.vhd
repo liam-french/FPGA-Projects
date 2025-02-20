@@ -1,24 +1,20 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-
 entity ssd is
     port (  A, B, C, D: in std_logic;
         O: out std_logic_vector(6 downto 0));
 end ssd;
 
-
-
-
 architecture impl of ssd is
 begin
     -- a
     O(0) <= not ((A and not B and not C) 
-                or (not A and B and D)
-                or (not B and not D)
-                or (not A and C)
-                or (A and not D)
-                or (B and C));
+            or (not A and B and D)
+            or (not B and not D)
+            or (not A and C)
+            or (A and not D)
+            or (B and C));
     -- b
     O(1) <= not((not A and not C and not D)
             or (not A and C and D)

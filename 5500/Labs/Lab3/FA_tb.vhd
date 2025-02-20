@@ -1,10 +1,10 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity FA4_tb is
-end FA4_tb;
+entity FA_tb is
+end FA_tb;
 
-architecture test of FA4_tb is
+architecture test of FA_tb is
     component FA
         port(
             A, B : in std_logic;
