@@ -1,4 +1,7 @@
-!*.vh
-!*.do
-!*.mem
-!*.sh
+!*
+sim/work
+sim/wlf*
+sim/transcript
+*.vcd
+*.ini
+*.log

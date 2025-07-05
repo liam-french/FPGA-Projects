@@ -38,9 +38,18 @@ module control(
                 Branch = 0;
                 ALUOp = 2'b00;
             end
-            7'b1100011: begin // Branch
+            7'b0010011: begin // I-Type (addi, slti, sltiu, xori, ori, andi)
+                ALUSrc = 1;
+                MemtoReg = 0;
+                RegWrite = 1;
+                MemRead = 0;
+                MemWrite = 0;
+                Branch = 0;
+                ALUOp = 2'b10;
+            end
+            7'b1100011: begin // SB-type
                 ALUSrc = 0;
-                MemtoReg = 1;
+                MemtoReg = 0;
                 RegWrite = 0;
                 MemRead = 0;
                 MemWrite = 0;

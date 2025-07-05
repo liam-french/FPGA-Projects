@@ -2,13 +2,13 @@
 vlib work
 
 # Compile your sources
-vlog -sv +acc=rn *.sv *.vh
+vlog -sv +acc=rn ../components/*.sv ../components/*.vh
 
 # Launch simulation and write VCD
-vsim -voptargs=+acc -do {
-    do waves.do
+vsim -debugDB -voptargs=+acc -do {
+    do wave.do
     vcd file dump.vcd
-    vcd add -r /*                  ;# Log all signals
+    vcd add -r /*
     run 1100
     view wave
 } work.core_top_tb

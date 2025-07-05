@@ -8,12 +8,24 @@ module data_memory #(
     output logic [31:0] read_data
     );
 
-    logic [DATA_WIDTH-1:0] data_mem [2**ADDR_WIDTH];
+    parameter int DEPTH = 2**ADDR_WIDTH;
+
+    // Log writes to a file in sim
+    integer log_file;
+    initial begin
+        log_file = $fopen("memory_write_log.txt", "w");
+    end
+
+    logic [DATA_WIDTH-1:0] data_mem [DEPTH];
+
     always_comb begin
         if (read_en) read_data = data_mem[addr];
         else read_data = '0;
     end
     always_ff @(posedge clk) begin
         if (write_en) data_mem[addr] <= write_data;
+        if (log_file) begin
+            $fwrite(log_file, "%h:%h\n", addr, write_data);
+        end
     end
 endmodule
