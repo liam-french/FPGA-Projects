@@ -13,7 +13,7 @@ module data_memory #(
     // Log writes to a file in sim
     integer log_file;
     initial begin
-        log_file = $fopen("memory_write_log.txt", "w");
+        log_file = $fopen("memory_write.log", "w");
     end
 
     logic [DATA_WIDTH-1:0] data_mem [DEPTH];
@@ -23,9 +23,11 @@ module data_memory #(
         else read_data = '0;
     end
     always_ff @(posedge clk) begin
-        if (write_en) data_mem[addr] <= write_data;
-        if (log_file) begin
-            $fwrite(log_file, "%h:%h\n", addr, write_data);
+        if (write_en) begin
+            data_mem[addr] <= write_data;
+            if (log_file) begin
+                $fwrite(log_file, "%h:%h\n", addr, write_data);
+            end
         end
     end
 endmodule
