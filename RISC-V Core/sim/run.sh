@@ -1,10 +1,9 @@
 #!/bin/bash
+rm -f vsim.wlf transcript *.vcd wlftjd*
 
-# Create and map the work library
+# Build
 vlib work
+vlog -sv +acc=rn ../components/*.sv ../components/*.vh
 
-# Compile your sources
-vlog -sv ../components/*.sv ../components/*.vh
-
-# Launch simulation in command-line mode and execute sim.do
-vsim -c -l sim.log work.core_top_tb -do sim.do
+# Simulate
+vsim -l sim.log -c -do sim.do

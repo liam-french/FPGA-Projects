@@ -8,4 +8,6 @@ cd ..
 cd sim
 echo "Running simulation..."
 bash run.sh
+echo "Simulation complete. Moving log files..."
+mv sim.log ../sim.log
 mv memory_write.log ../memory_write.log
