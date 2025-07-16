@@ -1,7 +1,10 @@
-!*
 sim/work
 sim/wlf*
 sim/transcript
 *.vcd
 *.ini
 *.log
+
+# Assembler
+assembler/__pycache__/*
+assembler/.pytest_cache
