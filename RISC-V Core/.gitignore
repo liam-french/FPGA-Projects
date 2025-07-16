@@ -1,6 +1,6 @@
-sim/work
+**/work
+**/transcript
 sim/wlf*
-sim/transcript
 *.vcd
 *.ini
 *.log
@@ -8,3 +8,4 @@ sim/transcript
 # Assembler
 assembler/__pycache__/*
 assembler/.pytest_cache
+instructions.mem

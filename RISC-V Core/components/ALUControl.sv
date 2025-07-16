@@ -1,10 +1,10 @@
 `include "alu.vh"
 
 module ALUControl (
-    input logic [1:0] ALUOp,
-    input logic [2:0] funct3,
-    input logic [6:0] funct7,
-    output logic [3:0] ALUCtl
+        input logic [1:0] ALUOp,
+        input logic [2:0] funct3,
+        input logic [6:0] funct7,
+        output logic [3:0] ALUCtl
     );
     always_comb begin
         case(ALUOp)

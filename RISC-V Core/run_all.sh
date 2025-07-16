@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd python_if
+cd assembler
 echo "----------------------------------------"
 echo "Running python assembler..."
 echo "----------------------------------------"
