@@ -2,42 +2,72 @@
 `timescale 1ns / 1ns
 
 module core_top #(
-    parameter int DATA_WIDTH = 32,
-    parameter int DATA_ADDR_WIDTH = 5,
-    parameter int INSTRUCTION_ADDR_WIDTH = 5,
+    parameter int DATA_WIDTH     = 32,
+    parameter int ADDR_WIDTH     = 5,
     parameter int REG_ADDR_WIDTH = 5
 )(
         input logic clk_i, reset_i
     );
 
+    // --------------------------------------------------
+    // SIGNAL DECLARATIONS
+    // --------------------------------------------------
 
-    // Internal signals
-    logic [DATA_WIDTH-1:0] instruction_addr, next_addr;
-    logic [INSTRUCTION_ADDR_WIDTH-1:0] instruction_addr_trimmed, next_addr_trimmed;
+    // INSTRUCTION
     logic [DATA_WIDTH-1:0] instruction;
-    logic [DATA_WIDTH-1:0] alu_in;
+    logic [2:0] funct3;
+    logic [6:0] funct7;
+
+    // ADDRESSES
+    logic [ADDR_WIDTH-1:0] addr_trimmed;
+    logic [ADDR_WIDTH-1:0] instruction_addr_trimmed;
+    logic [ADDR_WIDTH-1:0] next_addr_trimmed;
+
     logic [DATA_WIDTH-1:0] branch_addr, inc_addr;
-    logic [DATA_WIDTH-1:0] Result;
-    logic [DATA_WIDTH-1:0] data_mem_out;
-    logic [DATA_ADDR_WIDTH-1:0] addr_trimmed;
+    logic [DATA_WIDTH-1:0] instruction_addr, next_addr;
+
+    // REGISTERS
     logic [4:0] rs1, rs2, rd;
     logic [DATA_WIDTH-1:0] reg_data1, reg_data2, write_data;
 
-    logic [3:0] ALUCtl;
-    logic MemRead, MemWrite, MemtoReg, Branch, ALUSrc, RegWrite, Zero;
+    // ALU
+    logic [DATA_WIDTH-1:0] alu_in;
+    logic [DATA_WIDTH-1:0] Result;
+    logic [DATA_WIDTH-1:0] immediate;
     logic [1:0] ALUOp;
+    logic [3:0] ALUCtl;
 
-    // Instantiate the program counter
-    assign next_addr_trimmed = next_addr[INSTRUCTION_ADDR_WIDTH-1:0];
-    // Expand instruction_addr_trimmed to DATA_WIDTH wide by zero-extending
+    // CONTROL SIGNALS
+    logic MemRead, MemWrite, MemtoReg, Branch, ALUSrc, RegWrite, Zero;
+    logic [DATA_WIDTH-1:0] data_mem_out;
+
+    // --------------------------------------------------
+    // SIGNAL ASSIGNMENTS
+    // --------------------------------------------------
+
+    // pad 0s to match DATA_WIDTH
     assign instruction_addr = {
-        {(DATA_WIDTH-INSTRUCTION_ADDR_WIDTH){1'b0}}, instruction_addr_trimmed
+        {(DATA_WIDTH-ADDR_WIDTH){1'b0}}, instruction_addr_trimmed
     };
-    // Trim alu result to match address width
-    assign addr_trimmed = Result[DATA_ADDR_WIDTH-1:0];
 
+    // trim addresses to match ADDR_WIDTH
+    assign next_addr_trimmed = next_addr[ADDR_WIDTH-1:0];
+    assign addr_trimmed      = Result[ADDR_WIDTH-1:0];
+    
+    // Instruction fields
+    always_comb begin
+        rs1 = instruction[19:15];
+        rs2 = instruction[24:20];
+        rd  = instruction[11:7]; 
+    end
+    assign funct3 = instruction[14:12];
+    assign funct7 = instruction[31:25];
+
+    // --------------------------------------------------
+    // MODULE INSTANTIATIONS
+    // --------------------------------------------------
     program_counter #(
-        .ADDRESS_WIDTH(INSTRUCTION_ADDR_WIDTH)
+        .ADDRESS_WIDTH(ADDR_WIDTH)
     ) pc (
         .clk(clk_i),
         .reset(reset_i),
@@ -45,13 +75,11 @@ module core_top #(
         .instruction_addr(instruction_addr_trimmed)
     );
 
-    // Instantiate the instruction memory
     instruction_memory imem (
         .read_addr(instruction_addr),
         .instruction(instruction)
     );
 
-    // Instantiate the control unit
     control ctrl (
         .instruction(instruction),
         .MemRead(MemRead),
@@ -63,27 +91,17 @@ module core_top #(
         .ALUOp(ALUOp)
     );
 
-    // ALU Control
     ALUControl alu_ctrl (
         .ALUOp(ALUOp),
-        .funct3(instruction[14:12]),
-        .funct7(instruction[31:25]),
+        .funct3(funct3),
+        .funct7(funct7),
         .ALUCtl(ALUCtl)
     );
 
-    // Immediate Generator
-    logic [DATA_WIDTH-1:0] immediate;
     immediate_gen imm_gen (
         .instruction(instruction),
         .imm_out(immediate)
     );
-
-    // Register File
-    always_comb begin
-        rs1 = instruction[19:15]; // rs1 field from instruction
-        rs2 = instruction[24:20]; // rs2 field from instruction
-        rd  = instruction[11:7];  // rd field from instruction
-    end
 
     register_file #(
         .DATA_WIDTH(DATA_WIDTH),
@@ -100,7 +118,6 @@ module core_top #(
         .rs2_data(reg_data2)
     );
 
-    // Adders
     alu #(DATA_WIDTH) adder (
         .A(instruction_addr),
         .B(4), // Increment by 4 for next instruction
@@ -117,11 +134,10 @@ module core_top #(
         .Zero()
     );
 
-    // PC Address Mux
     mux2x1 #(DATA_WIDTH) pc_mux (
-        .select(Branch && Zero), // Branch if zero
-        .S0(inc_addr), // Next instruction address
-        .S1(branch_addr), // Branch target address
+        .select(Branch && Zero),
+        .S0(inc_addr),
+        .S1(branch_addr),
         .mux_out(next_addr)
     );
 
@@ -132,7 +148,6 @@ module core_top #(
         .mux_out(alu_in)
     );
 
-    // ALU
     alu alu (
         .A(reg_data1),
         .B(alu_in),
@@ -141,10 +156,9 @@ module core_top #(
         .Zero(Zero)
     );
 
-    // Data Memory
     data_memory #(
         .DATA_WIDTH(DATA_WIDTH),
-        .ADDR_WIDTH(DATA_ADDR_WIDTH)
+        .ADDR_WIDTH(ADDR_WIDTH)
     ) data_mem (
         .clk(clk_i),
         .write_en(MemWrite),
@@ -154,11 +168,10 @@ module core_top #(
         .read_data(data_mem_out)
     );
 
-    // Data Out Mux
     mux2x1 #(DATA_WIDTH) data_mux (
         .select(MemtoReg),
-        .S0(Result), // ALU result
-        .S1(data_mem_out), // Data memory output
+        .S0(Result),
+        .S1(data_mem_out),
         .mux_out(write_data)
     );
 endmodule

@@ -4,6 +4,11 @@ sim/wlf*
 *.vcd
 *.ini
 *.log
+*.wlf
+*.dbg
+
+.pytest_cache
+.vscode
 
 # Assembler
 assembler/__pycache__/*
