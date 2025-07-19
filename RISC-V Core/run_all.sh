@@ -1,16 +1,20 @@
 #!/bin/bash
 
-cd assembler
 echo "--------------------------------------------------------------------------------"
 echo "Running python assembler..."
 echo "--------------------------------------------------------------------------------"
+
+cd assembler
 python assembler.py
 mv instructions.mem ../instructions.mem
-cd ..
-cd sim
+
 echo "--------------------------------------------------------------------------------"
 echo "Running simulation..."
 echo "--------------------------------------------------------------------------------"
+
+cd ..
+cd sim
+
 if [ "$#" -eq 0 ]; then
     bash run.sh
 elif [ "$1" == "gui" ]; then
@@ -21,8 +25,11 @@ else
     echo "--------------------------------------------------------------------------------"
     exit 1
 fi
+
 echo "--------------------------------------------------------------------------------"
 echo "Simulation complete. Moving log files..."
 echo "--------------------------------------------------------------------------------"
+
+mkdir -p ../output
 mv sim.log ../output/sim.log
 mv memory_write.log ../output/memory_write.log

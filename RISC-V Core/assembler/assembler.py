@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 from instructions_map import build_instruction
 
 current_dir = Path(__file__).parent
@@ -30,7 +31,9 @@ def parse_file(file_path):
                 print(f"Error parsing line '{line}': {e}")
 
 def main():
-    file_path = current_dir / 'instructions.as'
+    file_path = current_dir / '..' / 'input'
+    file_path = file_path / 'instructions.as'
+    
     if not file_path.exists():
         print(f"File {file_path} does not exist.")
         return
