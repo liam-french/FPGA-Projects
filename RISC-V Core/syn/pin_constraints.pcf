@@ -1,0 +1,6 @@
+# UART Serial
+set_io serial_i 73
+set_io serial_o 74
+
+# Clock
+set_io clk_i 15
