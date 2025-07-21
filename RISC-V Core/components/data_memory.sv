@@ -2,11 +2,12 @@ module data_memory #(
     parameter int DATA_WIDTH = 32,
     parameter int ADDR_WIDTH = 8
 )(
-    input logic clk, write_en, read_en,
-    input logic [ADDR_WIDTH-1:0] addr,
-    input logic [31:0] write_data,
-    output logic [31:0] read_data
-    );
+    input  logic clk, write_en, read_en,
+    input  logic [ADDR_WIDTH-1:0] addr,
+    input  logic [DATA_WIDTH-1:0] write_data,
+
+    output logic [DATA_WIDTH-1:0] read_data
+);
 
     parameter int DEPTH = 2**ADDR_WIDTH;
 

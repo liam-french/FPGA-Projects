@@ -30,6 +30,8 @@ def main():
             continue
 
         if 1 <= choice <= len(sv_files):
+            gui = input("Do you want to run the testbench in GUI mode? (y/n): ").strip().lower()
+
             selected_file = sv_files[choice - 1]
             print(f"Running testbench: {selected_file}")
 
@@ -37,8 +39,10 @@ def main():
             os.system(f"vlog {selected_file}")
 
             tb_name = os.path.splitext(selected_file)[0]
-
-            os.system(f"vsim -c work.{tb_name} -do \"run -all; quit\"")
+            if gui == 'y':
+                os.system(f"vsim work.{tb_name} -do \"run -all;\"")
+            else:
+                os.system(f"vsim -c work.{tb_name} -do \"run -all; quit\"")
             break
 
 if __name__ == "__main__":
