@@ -1,12 +1,12 @@
 module control(
-        input logic [31:0] instruction,
+        input logic [31:0] instruction_i,
         output logic MemRead, MemWrite, MemtoReg, Branch, ALUSrc, RegWrite,
         output logic [1:0] ALUOp
     );
     logic [6:0] opcode;
 
     always_comb begin
-        opcode = instruction[6:0];
+        opcode = instruction_i[6:0];
     end
 
     always_comb begin
@@ -45,7 +45,7 @@ module control(
                 MemRead = 0;
                 MemWrite = 0;
                 Branch = 0;
-                ALUOp = 2'b10;
+                ALUOp = 2'b11;
             end
             7'b1100011: begin // SB-type
                 ALUSrc = 0;

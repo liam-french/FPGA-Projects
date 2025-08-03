@@ -53,12 +53,12 @@ module core_top #(
     // trim addresses to match ADDR_WIDTH
     assign next_addr_trimmed = next_addr[ADDR_WIDTH-1:0];
     assign addr_trimmed      = Result[ADDR_WIDTH-1:0];
-    
+
     // Instruction fields
     always_comb begin
         rs1 = instruction[19:15];
         rs2 = instruction[24:20];
-        rd  = instruction[11:7]; 
+        rd  = instruction[11:7];
     end
     assign funct3 = instruction[14:12];
     assign funct7 = instruction[31:25];
@@ -81,7 +81,7 @@ module core_top #(
     );
 
     control ctrl (
-        .instruction(instruction),
+        .instruction_i(instruction),
         .MemRead(MemRead),
         .MemWrite(MemWrite),
         .MemtoReg(MemtoReg),
@@ -119,19 +119,21 @@ module core_top #(
     );
 
     alu #(DATA_WIDTH) adder (
-        .A(instruction_addr),
-        .B(4), // Increment by 4 for next instruction
-        .ALUCtl(ALU_ADD),
-        .Result(inc_addr),
-        .Zero()
+        .A_i(instruction_addr),
+        .B_i(4), // Increment by 4 for next instruction
+        .ctl_i(ALU_ADD),
+        .shamt_i(),
+        .result_o(inc_addr),
+        .zero_o()
     );
 
     alu #(DATA_WIDTH) branch_adder (
-        .A(instruction_addr),
-        .B(immediate),
-        .ALUCtl(ALU_ADD),
-        .Result(branch_addr),
-        .Zero()
+        .A_i(instruction_addr),
+        .B_i(immediate),
+        .ctl_i(ALU_ADD),
+        .shamt_i(),
+        .result_o(branch_addr),
+        .zero_o()
     );
 
     mux2x1 #(DATA_WIDTH) pc_mux (
@@ -149,11 +151,12 @@ module core_top #(
     );
 
     alu alu (
-        .A(reg_data1),
-        .B(alu_in),
-        .ALUCtl(ALUCtl),
-        .Result(Result),
-        .Zero(Zero)
+        .A_i(reg_data1),
+        .B_i(alu_in),
+        .ctl_i(ALUCtl),
+        .shamt_i(),
+        .result_o(Result),
+        .zero_o(Zero)
     );
 
     data_memory #(

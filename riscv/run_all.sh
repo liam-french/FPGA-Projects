@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SCRIPT_DIR=$(pwd)
+echo SCRIPT_DIR: $SCRIPT_DIR
 echo "--------------------------------------------------------------------------------"
 echo "Running python assembler..."
 echo "--------------------------------------------------------------------------------"
@@ -33,3 +35,7 @@ echo "--------------------------------------------------------------------------
 mkdir -p ../output
 mv sim.log ../output/sim.log
 mv memory_write.log ../output/memory_write.log
+
+cd $SCRIPT_DIR
+
+mv instructions.mem output/instructions.mem
