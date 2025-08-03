@@ -36,6 +36,7 @@ module core_top #(
     logic [DATA_WIDTH-1:0] immediate;
     logic [1:0] ALUOp;
     logic [3:0] ALUCtl;
+    logic [4:0] shamt;
 
     // CONTROL SIGNALS
     logic MemRead, MemWrite, MemtoReg, Branch, ALUSrc, RegWrite, Zero;
@@ -56,12 +57,12 @@ module core_top #(
 
     // Instruction fields
     always_comb begin
-        rs1 = instruction[19:15];
-        rs2 = instruction[24:20];
-        rd  = instruction[11:7];
+        rs1    = instruction[19:15];
+        rs2    = instruction[24:20];
+        rd     = instruction[11:7];
+        funct3 = instruction[14:12];
+        funct7 = instruction[31:25];
     end
-    assign funct3 = instruction[14:12];
-    assign funct7 = instruction[31:25];
 
     // --------------------------------------------------
     // MODULE INSTANTIATIONS
@@ -150,11 +151,18 @@ module core_top #(
         .mux_out(alu_in)
     );
 
+    mux2x1 #(5) shift_amount_mux (
+        .select(ALUOp[0]),
+        .S0(reg_data2[4:0]),
+        .S1(instruction[24:20]),
+        .mux_out(shamt)
+    );
+
     alu alu (
         .A_i(reg_data1),
         .B_i(alu_in),
         .ctl_i(ALUCtl),
-        .shamt_i(),
+        .shamt_i(shamt),
         .result_o(Result),
         .zero_o(Zero)
     );

@@ -8,7 +8,7 @@ module instruction_memory #(
     logic [INSTRUCTION_WIDTH-1:0] instruction_mem [1 << ADDR_WIDTH];
     initial begin
         $display("Loading instructions from instructions.mem");
-        $readmemh("C:\\Users\\liamr\\projects\\FPGA\\RISC-V Core\\instructions.mem", instruction_mem);
+        $readmemh("C:\\Users\\liamr\\projects\\FPGA\\riscv\\instructions.mem", instruction_mem);
         for (int i = 0; i < 8; i++) begin
             $display("Instruction_mem[%0d] = %h", i, instruction_mem[i]);
         end

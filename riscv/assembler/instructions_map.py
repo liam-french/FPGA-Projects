@@ -18,6 +18,9 @@ i_fmt = {
     "ADDI":  {"opcode": "0010011", "funct3": "000"},
     "SLTI":  {"opcode": "0010011", "funct3": "010"},
     "SLTIU": {"opcode": "0010011", "funct3": "011"},
+    "SLLI":  {"opcode": "0010011", "funct3": "001", "funct7": "0000000"},
+    "SRLI":  {"opcode": "0010011", "funct3": "101", "funct7": "0000000"},
+    "SRAI":  {"opcode": "0010011", "funct3": "101", "funct7": "0100000"},
     "XORI":  {"opcode": "0010011", "funct3": "100"},
     "ORI":   {"opcode": "0010011", "funct3": "110"},
     "ANDI":  {"opcode": "0010011", "funct3": "111"},
@@ -71,6 +74,7 @@ def get_instruction_type(name):
         return "U"
     if name in uj_fmt:
         return "UJ"
+    print(f"Unknown instruction type for: {name}")
     return None
 
 def get_instruction_opcode(name):
