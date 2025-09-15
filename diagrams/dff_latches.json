@@ -1,0 +1,7 @@
+{ signal: [
+  { name: "Clock",           wave: "0P", period: 4, phase: 2},
+  { name: "Primary Latch",   wave: "7.9.", data: ["open", "closed"] },
+  { name: "Secondary Latch", wave: "9.7.", data: ["closed", "open"] },
+  { name: "D",               wave: "01.." },
+  { name: "Q",               wave: "x.1." }
+]}

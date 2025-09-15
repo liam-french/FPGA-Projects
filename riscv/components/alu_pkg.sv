@@ -1,5 +1,4 @@
-`ifndef TYPES_PKG_VH
-`define TYPES_PKG_VH
+package alu_pkg;
 
 typedef enum logic [3:0] {
     ALU_AND = 4'b0000,
@@ -13,4 +12,4 @@ typedef enum logic [3:0] {
     ALU_SRA = 4'b1000
 } alu_ctl_t;
 
-`endif
+endpackage : alu_pkg

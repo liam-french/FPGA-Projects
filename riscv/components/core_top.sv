@@ -1,4 +1,4 @@
-`include "alu.vh"
+import alu_pkg::*;
 `timescale 1ns / 1ns
 
 module core_top #(
@@ -137,6 +137,15 @@ module core_top #(
         .zero_o()
     );
 
+    alu alu (
+        .A_i(reg_data1),
+        .B_i(alu_in),
+        .ctl_i(ALUCtl),
+        .shamt_i(shamt),
+        .result_o(Result),
+        .zero_o(Zero)
+    );
+
     mux2x1 #(DATA_WIDTH) pc_mux (
         .select(Branch && Zero),
         .S0(inc_addr),
@@ -158,13 +167,11 @@ module core_top #(
         .mux_out(shamt)
     );
 
-    alu alu (
-        .A_i(reg_data1),
-        .B_i(alu_in),
-        .ctl_i(ALUCtl),
-        .shamt_i(shamt),
-        .result_o(Result),
-        .zero_o(Zero)
+    mux2x1 #(DATA_WIDTH) data_mux (
+        .select(MemtoReg),
+        .S0(Result),
+        .S1(data_mem_out),
+        .mux_out(write_data)
     );
 
     data_memory #(
@@ -177,12 +184,5 @@ module core_top #(
         .addr(addr_trimmed),
         .write_data(reg_data2),
         .read_data(data_mem_out)
-    );
-
-    mux2x1 #(DATA_WIDTH) data_mux (
-        .select(MemtoReg),
-        .S0(Result),
-        .S1(data_mem_out),
-        .mux_out(write_data)
     );
 endmodule

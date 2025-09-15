@@ -1,4 +1,4 @@
-`include "alu.vh"
+import alu_pkg::*;
 
 module ALUControl (
         input logic [1:0] ALUOp,
@@ -13,7 +13,6 @@ module ALUControl (
             2'b10: begin
                 case(funct3)
                     3'b000: ALUCtl = (funct7[5] == 1'b1) ? ALU_SUB : ALU_ADD;
-                    3'b000: ALUCtl = ALU_ADD;
                     3'b001: ALUCtl = ALU_SLL;
                     3'b010: ALUCtl = ALU_SLT;
                     3'b011: ALUCtl = ALU_SLT;

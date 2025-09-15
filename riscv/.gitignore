@@ -1,6 +1,5 @@
 **/work
 **/transcript
-**/compiled
 sim/wlf*
 *.vcd
 *.ini
@@ -17,3 +16,7 @@ assembler/.pytest_cache
 instructions.mem
 input/*
 output/*
+
+# Synthesis
+**/core
+**/compiled

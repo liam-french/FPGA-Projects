@@ -1,4 +1,4 @@
-`include "alu.vh"
+import alu_pkg::*;
 
 module alu #(parameter int DATA_WIDTH = 32) (
         input  logic [DATA_WIDTH-1:0] A_i, B_i,

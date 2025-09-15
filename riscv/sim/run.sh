@@ -2,7 +2,8 @@
 rm -f vsim.wlf transcript *.vcd wlftjd*
 
 vlib work
-vlog -sv +acc=rn ../components/*.sv ../components/*.vh
+vlog ../components/alu_pkg.sv
+vlog -sv +acc=rn ../components/*.sv
 
 if [ "$#" -eq 0 ]; then
     vsim -l sim.log -c -do sim.do
